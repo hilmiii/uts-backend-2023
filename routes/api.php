@@ -44,5 +44,5 @@ Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
 //method search resource
 Route::get('/employees/search/{name}', [EmployeeController::class, 'search']);
 
-//method status resource
+//method status resource (active, inactive, terminated)
 Route::get('/employees/status/{status}', [EmployeeController::class, 'status']);

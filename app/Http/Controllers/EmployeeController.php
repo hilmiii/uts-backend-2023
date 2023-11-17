@@ -56,7 +56,7 @@ class EmployeeController extends Controller
             "phone" => "required",
             "address" => "required",
             "email" => "required|email",
-            "status" => ["required", Rule::in(['active', 'inactive'])],
+            "status" => ["required", Rule::in(['active', 'inactive', 'terminated'])],
             "hired_on" => "required|date_format:d/m/Y"
         ]);
 
@@ -154,10 +154,18 @@ class EmployeeController extends Controller
         return  Employee::where('name', 'like', '%' . $name . '%')->get();
     }
     
-    // Menampilkan data resource berdasarkan status
-    public function status($status)
-    {
-        return Employee::where('status', $status)->get();
+    // Menampilkan data resource berdasarkan status (active, inactive, terminated)
+    public function status($status){
+        $employees = Employee::where('status', $status)->get();
+
+        if ($employees->isEmpty()) {
+            $data = [
+                'message' => 'Data not found',
+            ];
+        return response()->json($data, 200);
+        } else {
+            return response()->json($employees, 200);
+        }
     }
 
     // Function untuk format penanggalan yang nanti akan dipanggil pada function store dan update
